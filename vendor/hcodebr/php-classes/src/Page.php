@@ -9,24 +9,26 @@ class Page {
 	private $tpl;
 	private $options = [];
 	private $defaults = [
-		"data"=>[]
+		"data" => []
 	];
 			
 	public function __construct($opts = array()){
 
-		$this->$options = array_merge($this->$defaults, $options);
+		$this->options = array_merge($this->defaults, $opts);
+
+		// $dir = $_SERVER["DOCUMENT_ROOT"] . "/ecommerce/" ;
 
 		$config = array(
-			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/ecommerce/views/",
-			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/ecommerce/views-cache/",
-			"debug"         => false // set to false to improve the speed
+			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/",
+			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
+			"debug"         => false
 		);
 
 		Tpl::configure( $config );
 
-		$this->$tpl = new Tpl;
+		$this->tpl = new Tpl;
 
-		$this->setData($this->$options["data"]);
+		$this->setData($this->options["data"]);
 
 		$this->tpl->draw("header");
 	}
@@ -35,13 +37,13 @@ class Page {
 	{
 
 		foreach ($data as $key => $value) {
-			$this->$tpl->assign($key, $value);
+			$this->tpl->assign($key, $value);
 
 		}
 
 	}
 
-	public function setTpl($nome, $data = array(), $returnHTML = false)
+	public function setTpl($name, $data = array(), $returnHTML = false)
 	{
 
 		$this->setData();
