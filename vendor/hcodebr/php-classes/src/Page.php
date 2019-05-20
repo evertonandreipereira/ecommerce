@@ -37,10 +37,10 @@ class Page {
 		if ($this->options["header"] === true) $this->tpl->draw("header");
 	}
 
-	private function setData($data = array())
-	{
-
-		foreach ($data as $key => $value) {
+	private function setData($data = array()){		
+		foreach ($data as $key => $value) 
+		{
+			
 			$this->tpl->assign($key, $value);
 
 		}
