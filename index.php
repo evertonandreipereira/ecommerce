@@ -82,7 +82,7 @@ $app->get("/admin/users/create", function () {
 
  	$page->setTpl("users-create");
 
-	$user = new User();
+	// $user = new User();
 
 	// $_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
 
@@ -90,13 +90,13 @@ $app->get("/admin/users/create", function () {
 
  // 		"cost"=>12
 
- 	// ]);
+ // 	]);
 
- 	$user->setData($_POST);
+ // 	$user->setData($_POST);
 
-	$user->save();
+	// $user->save();
 
-	header("Location: /admin/users");
+	// header("Location: /admin/users");
 
 });
 
@@ -131,7 +131,7 @@ $app->get("/admin/users/:iduser", function($iduser){
 
 });
 
-$app->get("/admin/users/create", function(){
+$app->post("/admin/users/create", function(){
 
 	User::verifyLogin();
 

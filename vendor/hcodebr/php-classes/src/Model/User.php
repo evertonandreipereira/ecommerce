@@ -94,7 +94,8 @@ class User extends Model {
 				":inadmin"=>$this->getinadmin()
 
 		));
-
+var_dump($results);
+exit;
 
 		$this->setData($results[0]);
 
