@@ -95,6 +95,7 @@ class User extends Model {
 
 		));
 
+
 		$this->setData($results[0]);
 
 	}
@@ -108,7 +109,9 @@ class User extends Model {
 				":iduser"=>$iduser
 		));
 
+
 	$this->setData($results[0]);
+
 
 	}
 

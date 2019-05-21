@@ -74,7 +74,7 @@ $app->get("/admin/users", function(){
 
 });
 
-$app->post("/admin/users/create", function () {
+$app->get("/admin/users/create", function () {
 
  	User::verifyLogin();
 
@@ -84,13 +84,13 @@ $app->post("/admin/users/create", function () {
 
 	$user = new User();
 
-	$_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
+	// $_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
 
- 	$_POST['despassword'] = password_hash($_POST["despassword"], PASSWORD_DEFAULT, [
+ // 	$_POST['despassword'] = password_hash($_POST["despassword"], PASSWORD_DEFAULT, [
 
- 		"cost"=>12
+ // 		"cost"=>12
 
- 	]);
+ 	// ]);
 
  	$user->setData($_POST);
 
@@ -131,7 +131,7 @@ $app->get("/admin/users/:iduser", function($iduser){
 
 });
 
-$app->post("/admin/users/create", function(){
+$app->get("/admin/users/create", function(){
 
 	User::verifyLogin();
 
