@@ -85,7 +85,7 @@ class User extends Model {
 
 		$sql = new Sql();
 
-		$result = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
+		$results = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
 				":desperson"=>$this->getdesperson(),
 				":deslogin"=>$this->getdeslogin(),
 				":despassword"=>$this->getdespassword(),
@@ -94,8 +94,6 @@ class User extends Model {
 				":inadmin"=>$this->getinadmin()
 
 		));
-var_dump($results);
-exit;
 
 		$this->setData($results[0]);
 
@@ -103,18 +101,18 @@ exit;
 	
 	public function get($iduser)
 	{
-
-		$sql = new Sql();
-
-		$results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = :iduser", array(
-				":iduser"=>$iduser
-		));
-
-
-	$this->setData($results[0]);
-
-
-	}
+	 
+	 $sql = new Sql();
+	 
+	 $results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = :iduser;", array(
+	 		":iduser"=>$iduser
+		 ));
+	 
+	 $data = $results[0];
+	 
+	 $this->setData($data);
+	 
+	 }
 
 	public function update()
 	{
