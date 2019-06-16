@@ -69,7 +69,7 @@
                     </p>
                     <p class="form-row form-row-first">
                         <label for="email">E-mail <span class="required">*</span>
-                        </label>
+                        </label>s
                         <input type="email" id="email" name="email" class="input-text" value="<?php echo htmlspecialchars( $registerValues["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </p>
                     <p class="form-row form-row-first">
