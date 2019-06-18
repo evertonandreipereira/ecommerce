@@ -6,6 +6,8 @@ use \Hcode\Model\Category;
 use \Hcode\Model\Cart;
 use \Hcode\Model\Address;
 use \Hcode\Model\User;
+use \Hcode\Model\Order;
+use \Hcode\Model\OrderStatus;
 
 
 $app->get('/', function() {
@@ -180,55 +182,67 @@ $app->get("/checkout", function(){
 $app->post("/checkout", function(){
 
 	User::verifyLogin(false);
-
-	if(!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
+	
+	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
 		Address::setMsgError("Informe o CEP.");
-		header("Location: /checkout");
+		header('Location: /checkout');
 		exit;
 	}
-
-	if(!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
+	if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
 		Address::setMsgError("Informe o endereço.");
-		header("Location: /checkout");
+		header('Location: /checkout');
 		exit;
 	}
-
-	if(!isset($_POST['desdistrict']) || $_POST['desdistrict'] === '') {
+	if (!isset($_POST['desdistrict']) || $_POST['desdistrict'] === '') {
 		Address::setMsgError("Informe o bairro.");
-		header("Location: /checkout");
+		header('Location: /checkout');
 		exit;
 	}
-
-	if(!isset($_POST['descity']) || $_POST['descity'] === '') {
+	if (!isset($_POST['descity']) || $_POST['descity'] === '') {
 		Address::setMsgError("Informe a cidade.");
-		header("Location: /checkout");
+		header('Location: /checkout');
 		exit;
 	}
-
-	if(!isset($_POST['desstate']) || $_POST['desstate'] === '') {
+	if (!isset($_POST['desstate']) || $_POST['desstate'] === '') {
 		Address::setMsgError("Informe o estado.");
-		header("Location: /checkout");
+		header('Location: /checkout');
 		exit;
 	}
-
-	if(!isset($_POST['descountry']) || $_POST['descountry'] === '') {
+	if (!isset($_POST['descountry']) || $_POST['descountry'] === '') {
 		Address::setMsgError("Informe o país.");
-		header("Location: /checkout");
+		header('Location: /checkout');
 		exit;
 	}
 
-	$user = User::getFromSession();
+		$user = User::getFromSession();
 
-	$address = new Address();
+		$address = new Address();
 
-	$_POST['deszipcode'] = $_POST['zipcode'];
-	$_POST['idperson'] = $user->getidperson();
+		$_POST['deszipcode'] = $_POST['zipcode'];
 
-	$address->setData($_POST);
+		$_POST['idperson'] = $user->getidperson();
 
-	$address->save();
+		$address->setData($_POST);
 
-	header("Location: /order");
+		$address->save();
+
+		$cart = Cart::getFromSession();
+
+		$cart->getCalculateTotal();
+
+		$order = new Order();
+
+		$order->setData([
+			'idcart'=>$cart->getidcart(),
+			'idaddress'=>$address->getidaddress(),
+			'iduser'=>$user->getiduser(),
+			'idstatus'=>OrderStatus::EM_ABERTO,
+			'vltotal'=>$cart->getvltotal()
+	]);
+
+	$order->save();
+
+	header("Location: /order/".$order->getidorder());
 	exit;
 
 });
@@ -446,6 +460,16 @@ $app->post("/profile", function(){
 	header("Location: /profile");
 	exit;
 
+});
+
+$app->get("/order/:idorder", function($idorder){
+	User::verifyLogin(false);
+	$order = new Order();
+	$order->get((int)$idorder);
+	$page = new Page();
+	$page->setTpl("payment", [
+		'order'=>$order->getValues()
+	]);
 });
 
  ?>
