@@ -492,9 +492,9 @@ $app->get("/boleto/:idorder", function($idorder){
 	$dias_de_prazo_para_pagamento = 10;
 	$taxa_boleto = 5.00;
 	$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));  // Prazo de X dias OU informe data: "13/04/2006"; 
-	$valor_cobrado = formatPrice($order->getvltotal()); // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
+	$valor_cobrado = $order->getvltotal(); // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
 	$valor_cobrado = str_replace(",", ".",$valor_cobrado);
-	$valor_boleto=number_format($valor_cobrado+$taxa_boleto, 2, ',', '');
+	$valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
 
 	$dadosboleto["nosso_numero"] = $order->getidorder();  // Nosso numero - REGRA: Máximo de 8 caracteres!
 	$dadosboleto["numero_documento"] = $order->getidorder();	// Num do pedido ou nosso numero
@@ -544,7 +544,7 @@ $app->get("/boleto/:idorder", function($idorder){
 	$dadosboleto["cedente"] = "HCODE TREINAMENTOS LTDA - ME";
 
 	// NÃO ALTERAR!
-$path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "boletophp" . DIRECTORY_SEPARATOR . "include" . DIRECTORY_SEPARATOR;
+	$path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "boletophp" . DIRECTORY_SEPARATOR . "include" . DIRECTORY_SEPARATOR;
 
 	require_once($path . "funcoes_itau.php");
 	require_once($path . "layout_itau.php");
